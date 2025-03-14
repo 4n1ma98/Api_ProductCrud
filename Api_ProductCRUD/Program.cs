@@ -1,15 +1,32 @@
+using DataAccess;
+using DataAccess.Contracts;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configurar servicios de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp", builder =>
+        builder.WithOrigins("http://localhost:4200")
+               .AllowAnyMethod()
+               .AllowAnyHeader()
+               .AllowCredentials());
+});
+// Configurar servicios de CORS
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+builder.Services.AddTransient<DBContext>();
+
+builder.Services.AddScoped<IErrorCode, ErrorCode>();
+builder.Services.AddScoped<IErrorLog, ErrorLog>();
+builder.Services.AddScoped<IProductCrud, ProductCrud>();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -19,6 +36,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("AllowAngularApp");
 
 app.MapControllers();
 
