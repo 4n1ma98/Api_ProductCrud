@@ -1,3 +1,5 @@
+using Business;
+using Business.Contracts;
 using DataAccess;
 using DataAccess.Contracts;
 
@@ -17,6 +19,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddControllers();
 
 builder.Services.AddTransient<DBContext>();
+
+builder.Services.AddScoped<IProductValidation, ProductValidation>();
 
 builder.Services.AddScoped<IErrorCode, ErrorCode>();
 builder.Services.AddScoped<IErrorLog, ErrorLog>();
