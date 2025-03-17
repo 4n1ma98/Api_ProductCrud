@@ -47,9 +47,9 @@ namespace Business
         {
             Product product = new()
             {
-                Id = request.Id,
-                Price = request.Price,
-                Stock = request.Stock,
+                Id = request.Id!.Value,
+                Price = request.Price!.Value,
+                Stock = request.Stock!.Value,
             };
 
             return _productCrud.Update(product);
